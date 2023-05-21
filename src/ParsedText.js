@@ -5,9 +5,10 @@ function ParsedText() {
 	return (
 		<div>
 			<h3>This is parsed text:</h3>
-			<textarea className='parsedTextTextArea' rows={5} cols={40}>
+			{/* <textarea className='parsedTextTextArea' rows={5} cols={40}>
 				...
-			</textarea>
+			</textarea> */}
+			<p className='parsedTextParagraph'>here will parsed text be...</p>
 		</div>
 	);
 }
