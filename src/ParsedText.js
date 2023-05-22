@@ -12,7 +12,6 @@ function ParsedText() {
 			<p className='parsedTextParagraph'>here will parsed text be...</p>
 			<p className='parsedTextParagraph'>here will parsed text be...</p>
 			<p className='parsedTextParagraph'>here will parsed text be...</p>
-			<p className='parsedTextParagraph'>here will parsed text be...</p>
 		</div>
 	);
 }
