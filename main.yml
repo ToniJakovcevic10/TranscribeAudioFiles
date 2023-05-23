@@ -5,6 +5,12 @@ phases:
       runtime-versions:
          nodejs: 18
 
+   pre_build:
+      commands:
+         - echo installing dependencies source npm dependencies....
+         - npm install
+         - aws --version
+
    build:
       commands:
          - echo Build started on 'date'
@@ -19,3 +25,7 @@ phases:
          - ls
          - pwd
          - aws s3 sync build/ s3://${{secrets.AWS_S3_BUCKET}} --acl public-read
+# artifacts:
+#    files:
+#       - 'build/*'
+#    name: artifact-name-s3
