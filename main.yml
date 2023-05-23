@@ -1,19 +1,36 @@
 version: 0.2
 
-phases:
-   pre_build:
-      commands:
-         - npm install
+name: Upload Website
 
-   build:
-      commands:
-         - npm run build
+on:
+   push:
+      branches:
+         - main
 
-   post_build:
-      commands:
-         - aws s3 --recursive ./build
+jobs:
+   deploy:
+      runs-on: ubuntu-latest
+      steps:
+         - name: Setup Node.js environment
+           uses: actions/setup-node@v3
+           with:
+              node-version: 16
 
-   env:
-      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         - name: Build React app
+           run: npm run build
+
+         - name: Checkout code
+           uses: actions/checkout@v3
+
+         - name: Sync to S3
+           uses: jakejarvis/s3-sync-action@master
+           with:
+              args: --acl public-read --follow-symlinks --delete --exclude '.git*/*'
+
+         - name: Upload to S3
+           run: aws s3 sync ./build s3://${{ secrets.AWS_S3_BUCKET }} --recursive
+
+           env:
+              AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
