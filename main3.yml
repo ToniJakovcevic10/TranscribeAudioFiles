@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+   install:
+      runtime-versions:
+         nodejs: 18
+
+   pre_build:
+      commands:
+         - echo installing dependencies source npm dependencies....
+         - npm install
+         - aws --version
+
+   build:
+      commands:
+         - echo Build started on 'date'
+         - echo first test codes
+         - echo Compiling Node.js code
+         - npm run build
+         - echo build finished. now moving to s3
+
+   post_build:
+      commands:
+         - echo Build completed on 'date'
+         - ls
+         - pwd
+         - aws s3 sync build/ s3://${{secrets.AWS_S3_BUCKET}} --acl public-read
+# artifacts:
+#    files:
+#       - 'build/*'
+#    name: artifact-name-s3
