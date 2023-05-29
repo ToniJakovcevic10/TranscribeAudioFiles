@@ -1,11 +1,12 @@
 import "./App.css";
 import ParsedText from "./ParsedText";
+import FileUpload from "./FileUpload";
 
 function App() {
 	return (
 		<div className='App'>
 			<header className='App-header'>
-				<button className='uploadAudioButton'>Upload Audio</button>
+				<FileUpload />
 				<ParsedText />
 			</header>
 		</div>

@@ -1,5 +1,12 @@
 version: 0.2
 
+env:
+   variables:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+      AWS_S3_ARTIFACT: ${{ secrets.AWS_S3_ARTIFACT }}
+
 phases:
    install:
       runtime-versions:
@@ -7,7 +14,8 @@ phases:
    pre_build:
       commands:
          - echo "Installing dependencies - source npm dependencies..."
-         - npm install
+         - npm install -g npm@latest
+         - npm install react-scripts@latest
          - aws --version
    build:
       commands:
@@ -15,30 +23,16 @@ phases:
          - echo "Running first test codes"
          - echo "Compiling Node.js code"
          - npm run build
-         - echo "Build finished. Now moving to S3"
+         # - echo "Build finished. Now moving to S3 ${{ secrets.AWS_S3_BUCKET }}"
    post_build:
       commands:
          - echo "Build completed on $(date)"
          - ls
          - pwd
-         - aws s3 sync build/ s3://${{ secrets.AWS_S3_BUCKET }} --acl public-read
+         - aws s3 sync build/ s3://react-app-transcribe-audio --acl read
 
 artifacts:
+   name: "aws s3 artifacts"
    files:
       - "build/*"
-
-env:
-   variables:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-      AWS_S3_ARTIFACT: ${{ secrets.AWS_S3_ARTIFACT }}
-# artifacts:
-#    name: aws s3 artifacts
-#    files:
-#       - "build/*"
-
-# artifacts:
-#    files:
-#       - ./*
-#    discard-paths: yes
+   discard-paths: no
