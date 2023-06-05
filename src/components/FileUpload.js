@@ -7,7 +7,7 @@ function FileUpload() {
 
 	function handleFile(event) {
 		setFile(event.target.files[0]);
-		// console.log(event.target.files[0]);
+		console.log(event.target.files[0]);
 	}
 
 	function handleSubmit() {

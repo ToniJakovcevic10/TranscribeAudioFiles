@@ -1,6 +1,6 @@
 import "./App.css";
-import ParsedText from "./ParsedText";
-import FileUpload from "./FileUpload";
+import ParsedText from "./components/ParsedText";
+import FileUpload from "./components/FileUpload";
 
 function App() {
 	return (
